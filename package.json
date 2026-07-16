@@ -1,0 +1,27 @@
+{
+  "name": "effect-ts-deep-study",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.13.1",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gauntlet": "tsx scripts/gauntlet.ts",
+    "verify": "tsx scripts/verify-invariant.ts",
+    "api": "tsx scripts/api-ground-truth.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "effect": "4.0.0-beta.98"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-beta.98",
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "msgpackr-extract"]
+  }
+}
