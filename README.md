@@ -39,13 +39,13 @@ corepack pnpm test pillars/01-basics
 
 ## Track Your Progress
 
-Run the full gauntlet to see how many test assertions you have passing across all 50 katas:
+Run the full gauntlet to see how many katas you have fully passing across all 50 katas:
 
 ```bash
 corepack pnpm gauntlet
 ```
 
-Each kata has multiple assertions; the total reflects all assertion checks across all exercises. A fresh clone with unsolved stubs starts at 0 fully-solved katas.
+A kata is **green** only when every assertion in its test file passes. The total reflects whole-kata completions, not individual assertions. A fresh clone with unsolved stubs starts at `0/50 green`.
 
 ---
 

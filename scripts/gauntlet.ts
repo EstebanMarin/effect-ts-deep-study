@@ -2,7 +2,8 @@ import { execFileSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
 import { resolve } from "node:path"
 
-// Runs the full vitest suite as JSON and prints per-pillar green counts.
+// Runs the full vitest suite as JSON and prints per-pillar green kata counts.
+// A KATA = one test file. A kata is GREEN iff every assertion in that file passed.
 // Uses `corepack pnpm exec vitest` so pnpm does not need to be on PATH.
 
 // Anchor to repo root (scripts/ is one level below root)
@@ -32,7 +33,7 @@ if (!raw.trim()) {
 }
 
 const json = JSON.parse(raw)
-const results: Array<{ name: string; assertionResults?: Array<{ status: string }> }> = json.testResults ?? []
+const results: Array<{ name: string; status: string; assertionResults?: Array<{ status: string }> }> = json.testResults ?? []
 
 // If JSON parsed but no results and stderr has content, it's a broken env
 if (results.length === 0 && stderrRaw.trim()) {
@@ -45,16 +46,16 @@ if (results.length === 0) {
   process.exit(0)
 }
 
+// Count katas (files) per pillar. A kata is GREEN iff file status === "passed"
+// (i.e. every assertion in the file passed).
 const byPillar = new Map<string, { pass: number; total: number }>()
 for (const f of results) {
   // f.name is the absolute file path; extract pillar from pillars/<name>/
   const m = f.name.match(/pillars\/([^/]+)\//)
   const pillar = m?.[1] ?? "unknown"
   const cur = byPillar.get(pillar) ?? { pass: 0, total: 0 }
-  for (const a of f.assertionResults ?? []) {
-    cur.total++
-    if (a.status === "passed") cur.pass++
-  }
+  cur.total++
+  if (f.status === "passed") cur.pass++
   byPillar.set(pillar, cur)
 }
 
