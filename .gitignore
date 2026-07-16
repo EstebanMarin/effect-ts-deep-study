@@ -1,0 +1,4 @@
+node_modules/
+solutions/
+*.log
+dist/
