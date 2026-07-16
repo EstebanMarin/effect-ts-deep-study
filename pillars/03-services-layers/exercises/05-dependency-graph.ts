@@ -36,10 +36,10 @@ export const DatabaseLive: Layer.Layer<Database, never, Config> = Layer.effect(
 
 // TODO: Wire the graph. Feed ConfigLive into DatabaseLive so the resulting
 // layer provides Database with NO remaining Config requirement.
-// Use Layer.provide(DatabaseLive, ConfigLive).
+// Hint: use Layer.provide — pass the layer that needs something as the first
+// argument and the layer that satisfies it as the second.
 //
-// The stub below leaves Config unsatisfied by casting a Config-requiring layer,
-// which means at runtime the real ConfigLive dbUrl is never wired in.
+// The stub below uses the wrong dbUrl because ConfigLive is never wired in.
 export const AppLive: Layer.Layer<Database> = Layer.provide(
   DatabaseLive,
   Layer.succeed(Config, { dbUrl: "postgres://WRONG/db" }),

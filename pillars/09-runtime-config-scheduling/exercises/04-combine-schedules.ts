@@ -14,7 +14,8 @@ export const alwaysFails = (
 // but cap the total number of retries at `maxRetries` (intersect the two
 // policies so retrying stops once the count limit is reached).
 //
-// Hint: Schedule.exponential(base).pipe(Schedule.upTo({ times: maxRetries }))
+// Hint: use Schedule.exponential for the delay, then pipe it through the
+// combinator that caps the number of attempts to maxRetries.
 //
 // Signature: (base, maxRetries) => Schedule<...>
 export const backoffCapped = (

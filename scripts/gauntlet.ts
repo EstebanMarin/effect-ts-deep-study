@@ -1,6 +1,5 @@
 import { execFileSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
-import { resolve } from "node:path"
 
 // Runs the full vitest suite as JSON and prints per-pillar green kata counts.
 // A KATA = one test file. A kata is GREEN iff every assertion in that file passed.

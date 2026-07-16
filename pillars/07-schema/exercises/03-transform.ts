@@ -5,15 +5,10 @@ import { Schema, SchemaGetter } from "effect"
 // number back into a string.
 //
 // TODO: Implement `Temperature` using `Schema.decodeTo`. Start from
-// `Schema.String`, target `Schema.Number`, and supply the transformation:
-//
-//   Schema.String.pipe(
-//     Schema.decodeTo(Schema.Number, {
-//       decode: SchemaGetter.transform((s) => Number(s)),
-//       encode: SchemaGetter.transform((n) => String(n)),
-//     }),
-//   )
-//
+// `Schema.String` as the encoded side, target `Schema.Number` as the decoded
+// side, and supply decode/encode transformations via SchemaGetter.transform.
+// Hint: pipe Schema.String through Schema.decodeTo(Schema.Number, { decode, encode })
+// where each side converts between string and number.
 // The current stub is the identity string schema retyped, so decoding does NOT
 // produce a number and encoding does NOT produce a string. Fix it.
 export const Temperature = Schema.String as unknown as Schema.Codec<number, string>

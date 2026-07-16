@@ -49,6 +49,12 @@ A kata is **green** only when every assertion in its test file passes. The total
 
 ---
 
+### Red squiggles in your editor are expected
+
+The `@effect/vitest` adapter uses a Scope type that the IDE's TypeScript language service flags as a mismatch on `it.effect` calls — this is a known quirk of the beta typings. You will also see unused-variable hints on stub `// TODO` holes because the placeholder return values don't reference the parameters yet. Neither set of squiggles reflects a real error. Run `corepack pnpm typecheck` (exit 0) to confirm the project compiles cleanly — that command, not your IDE's inline checker, is the source of truth. The squiggles disappear once you fill in the stubs.
+
+---
+
 ## Solutions
 
 `solutions/` is **intentionally git-ignored**. Reference answers exist locally for authors but are not shipped in this repository — work through the `// TODO` stubs yourself.
