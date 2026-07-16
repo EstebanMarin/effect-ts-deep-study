@@ -1,0 +1,189 @@
+#+TITLE: Effect v4 Kata Gauntlet — Follow-Along Tutorial
+#+AUTHOR: Esteban Marin
+#+STARTUP: overview logdone
+#+TODO: TODO(t) DOING(w) | DONE(d)
+#+PROPERTY: header-args:sh :dir . :results output
+
+* How to use this file
+:PROPERTIES:
+:VISIBILITY: children
+:END:
+
+A rustlings-style gauntlet: 50 katas, 10 pillars, easy→hard. Each kata is a stub
+with a =// TODO= hole plus a pre-written test that is RED until you solve it.
+You come from ZIO — these teach Effect v4 on its own terms (pure code, no ZIO notes).
+
+Work top-to-bottom. For each kata:
+1. =C-c C-t= cycles the heading TODO -> DOING -> DONE (or tick the =[ ]= checkbox).
+2. Open the test (=tests/NN-name.test.ts=) to read the target behaviour.
+3. Open the stub (=exercises/NN-name.ts=), fill the =// TODO= until the test is GREEN.
+4. Re-run the pillar test; move on.
+
+Target = *=corepack pnpm gauntlet=* reaches *50/50 green*. It starts at *0/50*.
+
+** Editor note (don't panic)
+Your editor may show red squiggles on =it.effect= (a Scope type quirk) and
+"unused variable" hints on the =// TODO= holes. These are IDE-only. The source of
+truth is =corepack pnpm typecheck= (exits 0). Ignore the squiggles.
+
+* Setup                                                              :setup:
+Run once.
+
+#+BEGIN_SRC sh
+corepack pnpm install
+#+END_SRC
+
+Useful commands (=pnpm= is invoked via =corepack= on this machine):
+#+BEGIN_SRC sh
+corepack pnpm test pillars/01-basics          # run one pillar (RED/GREEN loop)
+corepack pnpm test:watch pillars/01-basics    # re-run on save
+corepack pnpm gauntlet                         # progress X/50 green
+corepack pnpm typecheck                        # source-of-truth type check (exit 0)
+corepack pnpm api                              # regenerate docs/reference/v4-api-surface.md
+#+END_SRC
+
+Reference answers live in git-ignored =solutions/= if you get truly stuck — peek
+per kata, don't binge.
+
+* Progress dashboard
+Tick as you go (=C-c C-c= on a checkbox). One box per pillar = all 5 katas green.
+
+- [ ] Pillar 01 · Basics
+- [ ] Pillar 02 · Errors
+- [ ] Pillar 03 · Services & Layers
+- [ ] Pillar 04 · Concurrency & Fibers
+- [ ] Pillar 05 · Scope & Resources
+- [ ] Pillar 06 · Streams
+- [ ] Pillar 07 · Schema
+- [ ] Pillar 08 · STM
+- [ ] Pillar 09 · Runtime, Config & Scheduling
+- [ ] Pillar 10 · Testing
+
+* TODO Pillar 01 · Basics                                          :pillar01:
+:PROPERTIES:
+:DIR: pillars/01-basics
+:END:
+The =Effect= type, constructors, transforms, =Effect.gen=, lifting side effects.
+- [ ] 01 succeed-fail — =Effect.succeed= / =Effect.fail=, assert via =Exit=
+- [ ] 02 map-flatmap — transform with =Effect.map= / =Effect.flatMap=
+- [ ] 03 gen — rewrite a =pipe= chain as =Effect.gen=
+- [ ] 04 sync-promise — lift side effects: =Effect.sync= / =promise= / =tryPromise=
+- [ ] 05 pipeline (hard) — compose all of the above into one pipeline
+
+* TODO Pillar 02 · Errors                                          :pillar02:
+:PROPERTIES:
+:DIR: pillars/02-errors
+:END:
+Typed errors, recovery, =Cause=, defects vs failures vs interruption.
+Gotcha: no =Effect.catchAll=; use =Effect.catch= / =catchTag= / =catchCause= / =match=.
+- [ ] 01 tagged-fail — a tagged error + =Effect.fail=
+- [ ] 02 catch-tag — recover a specific error with =catchTag=
+- [ ] 03 catch-cause — fold with =catch= / =catchCause=
+- [ ] 04 inspect-cause — inspect a =Cause= (die vs fail)
+- [ ] 05 triage (hard) — defect vs failure vs interruption via =Exit=/=Cause=
+
+* TODO Pillar 03 · Services & Layers                               :pillar03:
+:PROPERTIES:
+:DIR: pillars/03-services-layers
+:END:
+Dependency injection. Gotcha: services are =Context.Service= (NOT =ServiceMap=).
+- [ ] 01 define-service — define & use a =Context.Service=
+- [ ] 02 layer-succeed — provide via =Layer.succeed= + =Effect.provide=
+- [ ] 03 compose-layers — compose two layers (=Layer.merge= / =provide=)
+- [ ] 04 scoped-layer — scoped layer with a cleanup finalizer
+- [ ] 05 dependency-graph (hard) — a service depending on another, resolved via layers
+
+* TODO Pillar 04 · Concurrency & Fibers                            :pillar04:
+:PROPERTIES:
+:DIR: pillars/04-concurrency-fibers
+:END:
+Fibers, structured concurrency, interruption.
+- [ ] 01 fork-join — =Effect.fork= + =Fiber.join=
+- [ ] 02 all-concurrency — =Effect.all= with a concurrency bound
+- [ ] 03 race — =Effect.race= / =raceAll=
+- [ ] 04 on-interrupt — =Effect.onInterrupt= finalizer fires on interrupt
+- [ ] 05 structured (hard) — parent interruption cascades to children
+
+* TODO Pillar 05 · Scope & Resources                               :pillar05:
+:PROPERTIES:
+:DIR: pillars/05-scope-resources
+:END:
+Resource safety under success, failure, and interruption.
+- [ ] 01 acquire-release — =Effect.acquireRelease= basics
+- [ ] 02 scoped-lifetime — =Effect.scoped= lifetime
+- [ ] 03 finalizer-on-failure — finalizer runs on failure
+- [ ] 04 finalizer-on-interrupt — finalizer runs on interruption
+- [ ] 05 nested-reverse-order (hard) — nested resources release LIFO
+
+* TODO Pillar 06 · Streams                                         :pillar06:
+:PROPERTIES:
+:DIR: pillars/06-streams
+:END:
+Pull-based streams, concurrency, chunking.
+- [ ] 01 from-iterable — =Stream.fromIterable= + =runCollect=
+- [ ] 02 map-filter-take — =map= / =filter= / =take=
+- [ ] 03 map-effect-concurrency — =mapEffect= with concurrency
+- [ ] 04 error-handling — handle errors in a stream
+- [ ] 05 grouped-batches (hard) — chunking / grouped + backpressure
+
+* TODO Pillar 07 · Schema                                          :pillar07:
+:PROPERTIES:
+:DIR: pillars/07-schema
+:END:
+Decode/encode, refinements, transformations. Gotcha: =Schema.check(Schema.isInt(), ...)=.
+- [ ] 01 decode-struct — decode a =Schema.Struct= with =decodeUnknownSync=
+- [ ] 02 refinements — =check= with =isInt= / =isGreaterThan=
+- [ ] 03 transform — a transformation schema (encoded <-> type)
+- [ ] 04 union-optional — =Union= / =optionalKey=
+- [ ] 05 decode-result (hard) — decode failure → formatted error via Exit/Result
+
+* TODO Pillar 08 · STM                                             :pillar08:
+:PROPERTIES:
+:DIR: pillars/08-stm
+:END:
+Transactional state. Gotcha: =TxRef= + =Effect.tx= (NOT =TRef=/=STM=).
+- [ ] 01 txref-get-set — =TxRef= get/set inside =Effect.tx=
+- [ ] 02 atomic-increment — atomic increment under =Effect.tx=
+- [ ] 03 transfer — transfer between two =TxRef=s atomically
+- [ ] 04 guarded-retry — guarded transaction with =Effect.txRetry=
+- [ ] 05 all-or-nothing (hard) — compose several ops, all-or-nothing rollback
+
+* TODO Pillar 09 · Runtime, Config & Scheduling                    :pillar09:
+:PROPERTIES:
+:DIR: pillars/09-runtime-config-scheduling
+:END:
+Retry/repeat schedules, config, custom runtime.
+- [ ] 01 retry-recurs — =Effect.retry= with =Schedule.recurs=
+- [ ] 02 repeat-schedule — =Effect.repeat= with a schedule
+- [ ] 03 config-provider — read via =Config= + =ConfigProvider=
+- [ ] 04 combine-schedules — combine schedules (exponential + cap)
+- [ ] 05 managed-runtime (hard) — build & run via =ManagedRuntime=
+
+* TODO Pillar 10 · Testing                                         :pillar10:
+:PROPERTIES:
+:DIR: pillars/10-testing
+:END:
+Deterministic testing. =TestClock= lives at =effect/testing=.
+- [ ] 01 it-effect — =it.effect= basic assertion
+- [ ] 02 testclock-sleep — =TestClock.advance= controls =Effect.sleep=
+- [ ] 03 schedule-repeat — deterministically test a schedule with =TestClock=
+- [ ] 04 mock-service — mock a =Context.Service= via a test =Layer=
+- [ ] 05 exit-cause (hard) — assert on =Exit= / =Cause= of a failing effect
+
+* Effect v4 (beta.98) API gotchas vs the blog posts               :reference:
+The beta differs from many v4 announcement posts. Ground truth (from the installed
+package; full export dump in =docs/reference/v4-api-surface.md=):
+- *Services*: =Context.Service= — there is NO =ServiceMap=. Provide via =Layer.*=.
+- *STM*: =TxRef= + =Effect.tx= / =Effect.txRetry= — NO =TRef=/=STM= module.
+- *Errors*: no =Effect.catchAll=. Use =Effect.catch= / =catchTag= / =catchCause=;
+  =Effect.match= folds BOTH channels (like =ZIO#fold=, not catchAll).
+- *Result replaces Either* — no =effect/Either=. =Effect.result= yields a =Result=.
+- *Schema*: refinements via =Schema.check(Schema.isInt(), Schema.isGreaterThan(0))=;
+  decode families =decodeUnknownSync/Exit/Result=, =decodeTo=; =Struct=/=Union=/=optionalKey=.
+- *TestClock* is at =effect/testing=. =it.effect= for virtual time, =it.live= for real time.
+- Imports use the =.js= extension (NodeNext), even for =.ts= files.
+
+* When you hit 50/50
+- Read the reference =solutions/= alongside your answers — compare idioms.
+- Regenerate/skim =docs/reference/v4-api-surface.md= to see what you haven't touched
+  (e.g. =Channel=, =Sink=, =Metric=, =unstable/http=) for a second lap.
