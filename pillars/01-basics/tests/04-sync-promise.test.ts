@@ -1,16 +1,19 @@
 import { it, expect } from "@effect/vitest"
-import { Effect } from "effect"
+import { Effect, Exit } from "effect"
 import {
   syncCounter,
   promiseValue,
   tryParseInt,
 } from "../exercises/04-sync-promise.js"
 
-it.effect("syncCounter uses Effect.sync to capture a mutable counter", () =>
+it.effect("syncCounter increments lazily on each run (proves deferred execution)", () =>
   Effect.gen(function* () {
-    const count = yield* syncCounter
-    expect(typeof count).toBe("number")
-    expect(count).toBeGreaterThanOrEqual(1)
+    // Running the same Effect twice must yield different values — this only works
+    // if the counter mutation is deferred inside Effect.sync (lazy), not evaluated
+    // eagerly at module load time (which Effect.succeed would do).
+    const first = yield* syncCounter
+    const second = yield* syncCounter
+    expect(second).toBe(first + 1)
   })
 )
 
@@ -31,6 +34,6 @@ it.effect("tryParseInt succeeds for '42'", () =>
 it.effect("tryParseInt fails for 'notANumber'", () =>
   Effect.gen(function* () {
     const exit = yield* Effect.exit(tryParseInt("notANumber"))
-    expect(exit._tag).toBe("Failure")
+    expect(Exit.isFailure(exit)).toBe(true)
   })
 )

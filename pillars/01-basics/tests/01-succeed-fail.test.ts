@@ -16,7 +16,8 @@ it.effect("makeFailure produces an effect that fails with the string 'oops'", ()
   Effect.gen(function* () {
     const exit = yield* Effect.exit(makeFailure)
     expect(Exit.isFailure(exit)).toBe(true)
-    // Extract the error via Effect.match (catchAll equivalent in v4)
+    // Extract the error via Effect.match — folds over BOTH channels (like ZIO#fold).
+    // For error recovery only, use Effect.catch/Effect.catchCause instead.
     const errOrFallback = yield* Effect.match(makeFailure, {
       onFailure: (e) => e,
       onSuccess: (_) => "no-error",

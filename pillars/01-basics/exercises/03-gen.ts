@@ -14,6 +14,6 @@ export const pipeVersion = (n: number): Effect.Effect<number, never, never> =>
 export const genVersion = (n: number): Effect.Effect<number, never, never> =>
   Effect.gen(function* () {
     const doubled = yield* Effect.map(Effect.succeed(n), (x) => x * 2)
-    // BUG: subtracts instead of adds — wrong on purpose so the test is RED
+    // TODO: combine doubled with the constant offset and return the final number
     return doubled - 10
   })

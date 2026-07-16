@@ -10,6 +10,6 @@ import { Effect } from "effect"
 //
 // Signature: (rawInput: string) => Effect.Effect<string, unknown, never>
 
+// TODO: Implement the pipeline body using Effect.gen with the four steps above.
 export const pipeline = (rawInput: string): Effect.Effect<string, unknown, never> =>
-  // BUG: ignores rawInput, always returns wrong value
   Effect.succeed("wrong")
