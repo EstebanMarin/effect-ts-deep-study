@@ -15,5 +15,5 @@ export const genVersion = (n: number): Effect.Effect<number, never, never> =>
   Effect.gen(function* () {
     const doubled = yield* Effect.map(Effect.succeed(n), (x) => x * 2)
     // TODO: combine doubled with the constant offset and return the final number
-    return doubled - 10
+    return doubled + 10
   })
