@@ -1,4 +1,4 @@
-import { Effect } from "effect"
+import { Effect, pipe } from "effect"
 
 // TODO: Implement `pipeline` using Effect.gen.
 //
@@ -12,4 +12,14 @@ import { Effect } from "effect"
 
 // TODO: Implement the pipeline body using Effect.gen with the four steps above.
 export const pipeline = (rawInput: string): Effect.Effect<string, unknown, never> =>
-  Effect.succeed("wrong")
+    Effect.gen(function* () {
+      const parsed = yield* Effect.tryPromise(() =>
+        Promise.resolve().then(() => {
+          const n = parseInt(rawInput, 10)
+          if (Number.isNaN(n)) throw new Error(`not a number: ${rawInput}`)
+          return n
+        })
+      )
+      const doubled = parsed * 2          // pure — just arithmetic, no wrapping
+      return `Result: ${doubled}`         // gen wraps this in the success channel
+    })
