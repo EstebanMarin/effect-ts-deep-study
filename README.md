@@ -13,6 +13,17 @@ A **rustlings-style** collection of 50 Effect v4 (beta) katas across 10 pillars.
 corepack pnpm install
 ```
 
+### Nix (optional)
+
+A `flake.nix` provides the full toolchain (Node 24 + Corepack). No global installs needed:
+
+```bash
+nix develop            # drops you in a shell with node + pnpm
+corepack pnpm install
+```
+
+With direnv, `echo 'use flake' > .envrc && direnv allow` loads it automatically.
+
 ---
 
 ## How to Solve a Kata
