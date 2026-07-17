@@ -10,4 +10,5 @@ export class NotFound extends Data.TaggedError("NotFound")<{
 // TODO: Return an Effect that FAILS with a NotFound error whose `id` is the
 //       given argument. Right now it wrongly succeeds instead of failing.
 export const lookup = (id: string): Effect.Effect<never, NotFound, never> =>
-  Effect.succeed(undefined as never)
+  Effect.fail(new NotFound({id}))
+
