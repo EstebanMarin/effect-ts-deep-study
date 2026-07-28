@@ -26,4 +26,6 @@ export const fetchUser = (
 export const withGuestFallback = (
   id: string,
 ): Effect.Effect<string, Forbidden, never> =>
-  fetchUser(id) as Effect.Effect<string, Forbidden, never>
+  fetchUser(id).pipe(
+    Effect.catchTag("NotFound", (e) => Effect.succeed(`guest: ${e.id}`))
+  )
