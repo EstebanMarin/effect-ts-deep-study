@@ -21,8 +21,8 @@ export const describeConfig: Effect.Effect<string, never, Config> = Effect.gen(
 // Use Layer.succeed(Config, { ... }).
 export const ConfigLive: Layer.Layer<Config> = Layer.succeed(Config, {
   // TODO: fill in the correct baseUrl and timeoutMs values
-  baseUrl: "http://wrong.example",
-  timeoutMs: 0,
+  baseUrl: "https://api.example.com",
+  timeoutMs: 3000,
 })
 
 // TODO: Provide ConfigLive to describeConfig using Effect.provide so the

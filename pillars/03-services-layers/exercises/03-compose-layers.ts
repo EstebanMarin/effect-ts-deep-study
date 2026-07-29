@@ -30,7 +30,7 @@ export const LoggerLive: Layer.Layer<Logger> = Layer.succeed(Logger, {
 // The stub below only merges Logger with itself, so the Clock service it
 // provides is not the real ClockLive one — fix it to merge the two services.
 export const AppLive: Layer.Layer<Clock | Logger> = Layer.merge(
-  Layer.succeed(Clock, { now: () => -1 }),
+  ClockLive,
   LoggerLive,
 )
 
