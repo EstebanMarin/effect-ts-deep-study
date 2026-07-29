@@ -42,7 +42,8 @@ export const DatabaseLive: Layer.Layer<Database, never, Config> = Layer.effect(
 // The stub below uses the wrong dbUrl because ConfigLive is never wired in.
 export const AppLive: Layer.Layer<Database> = Layer.provide(
   DatabaseLive,
-  Layer.succeed(Config, { dbUrl: "postgres://WRONG/db" }),
+  //  Layer.succeed(Config, { dbUrl: "postgres://WRONG/db" }),
+  ConfigLive
 )
 
 // TODO: Provide AppLive to runQuery so no requirements remain.
