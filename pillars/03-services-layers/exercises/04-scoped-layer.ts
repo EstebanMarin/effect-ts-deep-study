@@ -22,9 +22,11 @@ export const makeConnectionLive = (
 ): Layer.Layer<Connection> =>
   Layer.effect(
     Connection,
-    Effect.sync(() => {
-      events.push("open")
-      // TODO: register a release finalizer that pushes "close" onto `events`
-      return { send: (msg: string) => `sent:${msg}` }
-    }),
+    Effect.acquireRelease(
+      Effect.sync(() => {
+	events.push("open")
+	return { send: () => `sent:hi`}
+      }),
+      () => Effect.sync(() => { events.push("close") })
+    ),
   )
