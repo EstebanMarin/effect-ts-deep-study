@@ -16,5 +16,6 @@ export class Greeter extends Context.Service<Greeter, {
 export const welcome = (name: string): Effect.Effect<string, never, Greeter> =>
   Effect.gen(function* () {
     // TODO: obtain the Greeter service and use it to greet `name`
-    return "not implemented"
+    const greeter = yield *Greeter;
+    return greeter.greet(name);
   })

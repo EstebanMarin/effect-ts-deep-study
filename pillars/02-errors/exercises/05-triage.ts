@@ -21,9 +21,27 @@ export interface Triage {
 //       (extract the error with Cause.findError, which returns a Result;
 //        use Result.isSuccess + `.success`, fall back to "unknown" if absent).
 // Right now everything is misreported as an interruption.
-export const triage = (cause: Cause.Cause<AppError>): Triage => {
-  return { outcome: "interruption", detail: "interrupted" }
-}
+  export const triage = (cause: Cause.Cause<AppError>): Triage => {
+    // 1. Interrupt wins — check first.
+    if (Cause.hasInterrupts(cause)) {
+      return { outcome: "interruption", detail: "interrupted" }
+    }
+    // 2. Defect (die).
+    if (Cause.hasDies(cause)) {
+      const defect = Cause.findDefect(cause)
+      return {
+        outcome: "defect",
+        detail: Result.isSuccess(defect) ? String(defect.success) : "unknown",
+      }
+    }
+    // 3. Expected failure (fail).
+    const error = Cause.findError(cause)
+    return {
+      outcome: "failure",
+      detail: Result.isSuccess(error) ? error.success.message : "unknown",
+    }
+  }
+
 
 // Convenience: run an effect and triage its failure cause (given to you).
 export const triageEffect = (
