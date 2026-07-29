@@ -15,13 +15,11 @@ export const run = (
 //   - "defect"  when it died with a defect (Die)
 // TODO: Implement using Effect.exit + Exit.isSuccess / Exit.hasDies (or
 //       Exit.hasFails). Right now every outcome is misclassified as "success".
-export const classify = (
-  effect: Effect.Effect<number, string, never>,
-): Effect.Effect<"success" | "failure" | "defect", never, never> =>
-  Effect.gen(function* () {
-    const exit = yield* Effect.exit(effect)
-    const result: "success" | "failure" | "defect" = "success"
-    if (Exit.isSuccess(exit)) return result
-    // TODO: distinguish a defect (Die) from an expected failure (Fail)
-    return result
-  })
+  export const classify = (
+    effect: Effect.Effect<number, string, never>,
+  ): Effect.Effect<"success" | "failure" | "defect", never, never> =>
+    Effect.gen(function* () {
+      const exit = yield* Effect.exit(effect)
+      if (Exit.isSuccess(exit)) return "success"
+      return Exit.hasDies(exit) ? "defect" : "failure"
+    })

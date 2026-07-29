@@ -1,4 +1,4 @@
-import { Data, Effect } from "effect"
+import { Data, Effect, Cause } from "effect"
 
 export class ParseError extends Data.TaggedError("ParseError")<{
   readonly input: string
@@ -25,7 +25,12 @@ export const parse = (
 //   Use Effect.catchCause together with Cause.hasDies (both channels handled,
 //   so the result type must be Effect<number, never, never>).
 //   Right now it only handles success and leaks the error channel.
+
 export const parseOr = (
-  input: string,
-): Effect.Effect<number, never, never> =>
-  parse(input) as Effect.Effect<number, never, never>
+    input: string,
+  ): Effect.Effect<number, never, never> =>
+    parse(input).pipe(
+      Effect.catchCause((cause) =>
+        Effect.succeed(Cause.hasDies(cause) ? -1 : 0),
+      ),
+    )
