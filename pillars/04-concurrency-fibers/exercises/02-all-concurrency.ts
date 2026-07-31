@@ -12,4 +12,5 @@ import { Effect } from "effect"
 //       Right now this runs the tasks sequentially (default concurrency).
 export const runAllConcurrently = <A>(
   tasks: ReadonlyArray<Effect.Effect<A, never, never>>,
-): Effect.Effect<ReadonlyArray<A>, never, never> => Effect.all(tasks)
+): Effect.Effect<ReadonlyArray<A>, never, never> =>
+  Effect.all(tasks, { concurrency: "unbounded" })

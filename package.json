@@ -15,6 +15,7 @@
     "effect": "4.0.0-beta.98"
   },
   "devDependencies": {
+    "@effect/tsgo": "^0.24.3",
     "@effect/vitest": "4.0.0-beta.98",
     "@types/node": "^26.1.1",
     "tsx": "^4.23.1",

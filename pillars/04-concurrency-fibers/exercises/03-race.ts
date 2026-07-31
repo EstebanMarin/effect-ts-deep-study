@@ -8,7 +8,7 @@ import { Effect } from "effect"
 export const fastest = <A>(
   left: Effect.Effect<A, never, never>,
   right: Effect.Effect<A, never, never>,
-): Effect.Effect<A, never, never> => left
+): Effect.Effect<A, never, never> => Effect.raceAll
 
 // TODO: Return the value of whichever effect in the (non-empty) array completes
 //       FIRST. Use Effect.raceAll, which races all of them concurrently and

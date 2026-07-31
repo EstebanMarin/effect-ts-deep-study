@@ -14,4 +14,4 @@ import { Effect } from "effect"
 export const gatedWork = (
   onCancel: Effect.Effect<void, never, never>,
 ): Effect.Effect<never, never, never> =>
-  Effect.never as Effect.Effect<never, never, never>
+  Effect.never.pipe(Effect.onInterrupt(() => onCancel))
