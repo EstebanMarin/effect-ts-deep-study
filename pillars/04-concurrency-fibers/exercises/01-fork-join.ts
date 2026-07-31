@@ -16,6 +16,6 @@ export const forkAndJoin = <A>(
 ): Effect.Effect<A, never, never> =>
   Effect.gen(function* () {
     // TODO: fork `task`, then join the resulting fiber and return its value.
-    yield* task
-    return undefined as A
+    const fiber = yield* Effect.forkChild(task)
+    return yield * Fiber.join(fiber)
   })
