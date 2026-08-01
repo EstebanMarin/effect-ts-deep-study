@@ -7,4 +7,4 @@ import { Effect, Stream } from "effect"
 export const collectAll = (
   values: Iterable<number>,
 ): Effect.Effect<ReadonlyArray<number>, never, never> =>
-  Stream.runCollect(Stream.fromIterable([] as ReadonlyArray<number>))
+  Stream.runCollect(Stream.fromIterable(values))

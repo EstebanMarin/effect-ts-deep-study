@@ -11,6 +11,6 @@ export const fetchAll = <A>(
   concurrency: number,
 ): Effect.Effect<ReadonlyArray<A>, never, never> =>
   Stream.fromIterable(ids).pipe(
-    Stream.mapEffect((id) => fetch(id)),
+    Stream.mapEffect((id) => fetch(id), { concurrency : "unbounded" }),
     Stream.runCollect,
   )

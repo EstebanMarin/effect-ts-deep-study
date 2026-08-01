@@ -10,6 +10,7 @@ export const evenSquares = (
   limit: number,
 ): Effect.Effect<ReadonlyArray<number>, never, never> =>
   Stream.fromIterable(values).pipe(
-    Stream.map((n) => n * n),
+    Stream.filter(n => n % 2 == 0),
+    Stream.map(n => n * n),
     Stream.runCollect,
   )
