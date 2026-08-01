@@ -13,8 +13,16 @@ import { Effect } from "effect"
 // propagate out (the returned effect fails with the same error), but "cleanup"
 // must already be in `log`.
 export const runWithCleanup = (
-  log: Array<string>,
-  work: Effect.Effect<string, string, never>
+	log: Array<string>,
+	work: Effect.Effect<string, string, never>
 ): Effect.Effect<string, string, never> =>
-  // Wrong on purpose: runs the work but never registers/runs any finalizer.
-  work
+	// Wrong on purpose: runs the work but never registers/runs any finalizer.
+  Effect.scoped(
+    Effect.gen(function*() {
+      yield* Effect.addFinalizer(() =>
+	Effect.sync(() => {
+	  log.push("cleanup")
+	  return yield* work
+	})),
+    }),
+  );

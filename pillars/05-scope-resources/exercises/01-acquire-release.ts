@@ -11,7 +11,14 @@ import { Effect } from "effect"
 // The returned effect must require a Scope (that is its R channel); the test
 // wraps it in `Effect.scoped` to close the scope and trigger the release.
 export const openResource = (
-  log: Array<string>
+	log: Array<string>
 ): Effect.Effect<string, never, any> =>
-  // Wrong on purpose: no lifecycle at all, nothing is ever logged.
-  Effect.succeed("handle")
+	// Wrong on purpose: no lifecycle at all, nothing is ever logged.
+  Effect.acquireRelease(
+    Effect.sync(() => {
+      log.push("open")
+      return "handle"
+    }),
+    () => Effect.sync(() => {
+      log.push("close")}),
+  );

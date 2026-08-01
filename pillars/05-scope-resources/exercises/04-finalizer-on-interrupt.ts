@@ -12,8 +12,10 @@ import { Effect } from "effect"
 // The test forks this task, lets it start, then interrupts the fiber and checks
 // that "interrupted" was recorded.
 export const interruptibleTask = (
-  log: Array<string>
+	log: Array<string>
 ): Effect.Effect<never, never, never> =>
-  // Wrong on purpose: never registers the onInterrupt handler, so nothing is
-  // recorded when the fiber is cancelled.
-  Effect.never
+  Effect.never.pipe(
+    Effect.onInterrupt(() => {
+      Effect.sync(() => { log.push("interrupted")}),
+    }),
+  );

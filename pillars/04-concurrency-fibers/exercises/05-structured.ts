@@ -22,7 +22,7 @@ export const superviseChild = (
   child: Effect.Effect<never, never, never>,
 ): Effect.Effect<never, never, never> =>
   Effect.gen(function* () {
-    yield* Effect.forkDetach(child)
+    yield* Effect.forkChild(child)
     // Parent returns immediately here, orphaning the child.
     return yield* Effect.never
   })

@@ -18,9 +18,16 @@ import { Effect, Scope } from "effect"
 //
 // The `resource` factory is passed in so the test controls the logging.
 export const openThree = (
-  log: Array<string>,
-  resource: (name: string) => Effect.Effect<string, never, Scope.Scope>
+	log: Array<string>,
+	resource: (name: string) => Effect.Effect<string, never, Scope.Scope>
 ): Effect.Effect<Array<string>, never, never> =>
-  // Wrong on purpose: opens nothing, so no lifecycle is logged and the
-  // returned values are empty.
-  Effect.succeed([])
+	// Wrong on purpose: opens nothing, so no lifecycle is logged and the
+	// returned values are empty.
+  Effect.scoped(
+    Effect.gen(function*() {
+      const a = yield* resource("a")
+      const b = yield* resource("b")
+      const c = yield* resource("c")
+      return [a, b, c]
+    }),
+  );

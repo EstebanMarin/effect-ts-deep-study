@@ -14,7 +14,12 @@ import { Effect, Scope } from "effect"
 // The RESULT effect must NOT require a Scope any more (R = never): scoping it
 // discharges that requirement.
 export const useOnce = (
-  resource: Effect.Effect<string, never, Scope.Scope>
+	resource: Effect.Effect<string, never, Scope.Scope>
 ): Effect.Effect<string, never, never> =>
-  // Wrong on purpose: ignores the resource and its lifecycle entirely.
-  Effect.succeed("")
+	// Wrong on purpose: ignores the resource and its lifecycle entirely.
+  Effect.scoped(
+    Effect.gen(function*() {
+      const handle: String = yield* resource
+      return handle.toUpperCase()
+    }),
+  );
